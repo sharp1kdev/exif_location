@@ -1,8 +1,7 @@
 const fs = require("fs");
 const ExifImage = require("exif").ExifImage;
 const dateFormat = require("dateformat");
-
-let images = fs.readdirSync("img");
+const images = fs.readdirSync("img");
 
 images.forEach(img => {
   try {
@@ -15,7 +14,7 @@ images.forEach(img => {
   } catch (error) {}
 });
 
-// Reading exif data, if lat & lon exists - logging them
+// Reading exif data, if lat & lon exists - saving them
 function normalyzeData(filename, data) {
   if (data.gps.GPSLatitude && data.gps.GPSLongitude) {
     let lat = data.gps.GPSLatitude;
@@ -23,14 +22,14 @@ function normalyzeData(filename, data) {
     let lon = data.gps.GPSLongitude;
     let lonDir = data.gps.GPSLontitudeRef;
 
-    let ddLat = ConvertDMSToDD(lat[0], lat[1], lat[2], latDir);
-    let ddLon = ConvertDMSToDD(lon[0], lon[1], lon[2], lonDir);
+    let ddLat = convertDMSToDD(lat[0], lat[1], lat[2], latDir);
+    let ddLon = convertDMSToDD(lon[0], lon[1], lon[2], lonDir);
 
     writeToFile(filename + " => " + ddLat + ", " + ddLon);
   }
 }
 
-function ConvertDMSToDD(degrees, minutes, seconds, direction) {
+function convertDMSToDD(degrees, minutes, seconds, direction) {
   var dd = degrees + minutes / 60 + seconds / (60 * 60);
 
   if (direction == "S" || direction == "W") {
