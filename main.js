@@ -1,5 +1,6 @@
 const fs = require("fs");
 const ExifImage = require("exif").ExifImage;
+const dateFormat = require("dateformat");
 
 let images = fs.readdirSync("img");
 
@@ -25,7 +26,7 @@ function normalyzeData(filename, data) {
     let ddLat = ConvertDMSToDD(lat[0], lat[1], lat[2], latDir);
     let ddLon = ConvertDMSToDD(lon[0], lon[1], lon[2], lonDir);
 
-    console.log(filename, "=>", ddLat + ", " + ddLon);
+    writeToFile(filename + " => " + ddLat + ", " + ddLon);
   }
 }
 
@@ -38,4 +39,9 @@ function ConvertDMSToDD(degrees, minutes, seconds, direction) {
 
   // Returning decimal degrees limited to seven points
   return dd.toFixed(7);
+}
+
+function writeToFile(line) {
+  let timeStamp = dateFormat(new Date(), "dd.mm.yyyy h:MM:ss");
+  fs.appendFileSync("out.txt", "[" + timeStamp + "] " + line + "\r\n");
 }

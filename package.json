@@ -10,6 +10,7 @@
   "author": "theGrand",
   "license": "ISC",
   "dependencies": {
+    "dateformat": "^3.0.3",
     "exif": "^0.6.0"
   }
 }
